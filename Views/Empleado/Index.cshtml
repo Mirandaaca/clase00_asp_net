@@ -1,14 +1,84 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
 }
 <html>
+    <head>
+        @*referencia a bootstrap*@
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    </head>
     <body>
+        @*Ocupamos el @siempre que querramos implementar codigo C# en nuestro HTML*@
         Carmet: @ViewBag.ci <br>
         Nombre: @ViewBag.nombre <br>
         Casado: @ViewBag.isCasado <br>
         Estatura: @ViewBag.estatura <br>
         Fecha de contrato: @ViewBag.fechaContratacion.ToString("dd/MM/yyyy") <br>
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-4">
+                    <table class="table table-dark">
+                        <tr>
+                            <td>CI</td>
+                            <td>@ViewBag.empleado.ci</td>
+                        </tr>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>@ViewBag.empleado.nombre</td>
+                        </tr>
+                        <tr>
+                            <td>Estatura</td>
+                            <td>@ViewBag.empleado.estatura</td>
+                        </tr>
+                        <tr>
+                            <td>Peso</td>
+                            <td>@ViewBag.empleado.peso</td>
+                        </tr>
+                        <tr>
+                            <td>Foto</td>
+                            <td><img src="~/images/@ViewBag.empleado.foto" height="100px" width="100px" /></td>
+                        </tr>
+                        <tr>
+                            <td>Indice masa corporal</td>
+                            <td>@(ViewBag.empleado.peso / (ViewBag.empleado.estatura * ViewBag.empleado.estatura)) </ td > @*al utilizar el @() significa que haremos una operacion que retorne un valor en C#*@
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            @*Creando otra tabla para mostrar en la Vista los objetos empleados*@
+            <div class="row d-flex justify-content-center">
+                <div class="col-8">
+                    <table class="table table-success">
+                        @*creando la fila encabezado, esta siempre va a estar presente y estatica, sin importar cuantos registros hayan en la lista de objetos Empleado*@
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Estatura</th>
+                            <th>Peso</th>
+                            <th>Foto</th>
+                            <th>Indice masa corporal</th>
+                        </tr>
+                        @*creando otra fila a partir de codigo C#, automatizando asi el proceso de crear una nueva fila por cada empleado manualmente*@
+                        @*se ocupara un foreach para iterar la coleccion de datos (lista de objetos empleados), en cada iteracion rescatara el elemento 
+                        emp dentro de esa coleccion o lista de datos. Iterara cuantas veces tenga la cantidad de elementos en esa coleccion. Si hay 3 empleados entonces iterara 3 veces
+                        o en este caso, creara 3 filas. Si tiene 5 empleados en esa coleccion, creara 5 filas. Se esta haciendo una iteracion para crear etiquetas HTML*@
+                        @*Este foreach esta puesto luego de la primera fila y dentro de la etiqueta table, por lo tanto no habra problema si es que no genera ninguna fila*@
+                        @foreach (var emp in ViewBag.empleados) @*El @ solo afecta a la sintaxis del siguiente codigo C# que se escriba*@
+                        {
+                            @*Aqui se vuelve a trabajar con HTML automaticamente*@
+                            <tr> @*Primer columna (ID)*@
+                                 @*Aqui ya no se ocupa el ViewBag.empleados, ya que este ha sido la fuente para la iteracion, sino que se ocupara el emp, 
+                                 que es el empleado actual durante la iteracion del foreach. Estando dentro del foreach, se trabajara con emp.*@
+                                <td>@emp.ci</td> @*Se vuelve a agregar @ porque estoy trabajando de nuevo con C# al mencionar a emp*@
+                                <td>@emp.nombre</td> @*Segunda columa (Nombre)*@
+                                <td>@emp.estatura</td> @*Tercer columa (Estatura)*@
+                                <td>@emp.peso</td> @*Cuarta columa (Peso)*@
+                                <td><img src="~/images/@emp.foto" width="50px" height="50px"/></td> @*Quinta columa (Foto)*@
+                                <td>@(emp.peso / (emp.estatura * emp.estatura))</td> @*Sexta columa (Indice masa corporal)*@
+                            </tr> @*ya no volvemos a poner una nueva fila para cada td, porque pues para eso esta el foreach, creara una nueva fila en cada iteracion con sus td para cada objeto dentro de la coleccion (lista empleados)*@
+                        }
+                </table>
+                </div>
+            </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     </body>
 </html>
