@@ -30,7 +30,7 @@ namespace clase00_asp_net
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Principal}/{action=Index}/{id?}"
+                    pattern: "{controller=Principal}/{action=Index}/{id?}/{apellido?}"
                     );
             });
 

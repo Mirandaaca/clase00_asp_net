@@ -12,7 +12,7 @@ namespace clase00_asp_net.Controllers
             this.configuration = configuration;
         }
         //La Vista que se llamara en la accion o metodo debe tener exactamente el mismo nombre que el metodo. Fijarse en la carpeta Views, el html (la vista) tiene el mismo nombre que este metodo
-        //Pero tambien se puede codificar para que no tenga le mismo nombre, fijarse la linea 85
+        //Pero tambien se puede codificar para que no tenga le mismo nombre, para no estar atados al nombre del metodo, fijarse la linea 85
         [Route("index")]
         [Route("")]
         public IActionResult Index()
@@ -85,6 +85,39 @@ namespace clase00_asp_net.Controllers
             ViewBag.variable5 = configuration["VariablesConfig:varx:default"];
             ViewBag.variable6 = configuration["VariablesConfig:varx:advanced:extremo"];
             return View("Configuraciones"); //retornando/devolviendo la vista, de esta manera la vista no necesariamente debe tener el mismo nombre que el metodo
+        }
+        //recibir un parametro por ruta
+        [Route("editar/{ci}")] //podia haber sido [Route("EjemploParametro/{ci}")]
+        public IActionResult EjemploParametro(int ci)
+        {
+            ViewBag.carnet = ci;
+            /*if(ci == null)
+            {
+                return View("ErrorSinCI"); //retornar una vista bonita en caso de no encontrar ese parametro
+            }*/
+            return View();
+        }
+        [Route("editar2/{ci}/{apellido}")]
+        public IActionResult EjemploParametro2(int ci, string apellido)
+        {
+            ViewBag.carnet = ci;
+            ViewBag.apellido = apellido;
+            return View("EjemploParametro"); //de esta manera ya no tenemos que crear otra vista para este metodo, sino que se redirigira a EjemploParametro.cshtml
+        }
+        //Query String
+        [Route("editar3")]
+        public IActionResult EjemploParametro3([FromQuery(Name = "ci")] int ci)
+        {
+            ViewBag.carnet = ci;
+            return View("EjemploParametro");
+        }
+
+        [Route("editar4")]
+        public IActionResult EjemploParametro4([FromQuery(Name = "ci")] int ci, [FromQuery(Name = "ap")] string apellido)
+        {
+            ViewBag.carnet = ci;
+            ViewBag.apellido = apellido;
+            return View("EjemploParametro");
         }
     }
 }
